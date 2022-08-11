@@ -2,23 +2,21 @@ import NextAuth from "next-auth";
 import SpotifyProvider from "next-auth/providers/spotify";
 import spotifyApi, { LOGIN_URL } from "../../../lib/spotify";
 
-const refreshAccessToken = (token) => {
+async function refreshAccessToken(token) {
   // asynchrous function to refresh access token when it has expired
   try {
     spotifyApi.setAccessToken(token.accessToken);
-    spotifyApi.setRefreshToken(toke.refreshToken);
+    spotifyApi.setRefreshToken(token.refreshToken);
 
-    const { body: refreshedToken } = await spotifyApi.refreshAccessToken()
-    console.log("REFRESHED TOKEN IS", refreshedToken)
-
+    const { body: refreshedToken } = await spotifyApi.refreshAccessToken();
+    console.log("REFRESHED TOKEN IS", refreshedToken);
 
     return {
-        ...token,
-        accessToken: refreshedToken.accessToken,
-        accessTokenExpires: Date.now() + refreshedToken.expires_in * 1000,
-        refreshToken: refreshedToken.refreshToken ?? token.refreshToken  //Replace if new one came back, else fall back to the old refresh token
-    }
-
+      ...token,
+      accessToken: refreshedToken.access_token,
+      accessTokenExpires: Date.now() + refreshedToken.expires_in * 1000,
+      refreshToken: refreshedToken.refresh_token ?? token.refreshToken, //Replace if new one came back, else fall back to the old refresh token
+    };
   } catch (error) {
     console.log(error);
 
@@ -27,8 +25,7 @@ const refreshAccessToken = (token) => {
       error: "RefreshAccessTokenError",
     };
   }
-};
-
+}
 
 export default NextAuth({
   // Configuration for authentication prroviders
@@ -54,7 +51,7 @@ export default NextAuth({
           accessToken: account.access_token,
           refreshToken: account.refresh_token,
           username: account.providerAccountId,
-          accessTokenExpires: Date.now() + account.expires_at * 1000, //Handling Expiring time in milleseconds(i.e; *1000)
+          accessTokenExpires: account.expires_at * 1000, //Handling Expiring time in milleseconds(i.e; *1000)
         };
       }
 
@@ -68,11 +65,10 @@ export default NextAuth({
       return await refreshAccessToken(token);
     },
 
-
-    async session({session, token}) {
-        session.user.accessToken = token.accessToken
-        session.user.refreshAccessToken = token.refreshToken
-        session.user.username = token.username
-    }
+    async session({ session, token }) {
+      session.user.accessToken = token.accessToken;
+      session.user.refreshAccessToken = token.refreshToken;
+      session.user.username = token.username;
+    },
   },
 });
