@@ -7,8 +7,12 @@ import {
   HeartIcon,
   RssIcon,
 } from "@heroicons/react/outline";
+import { signOut, useSession } from "next-auth/react";
 
 const SideBar = () => {
+  const { data: session, status } = useSession();
+  console.log(session);
+
   return (
     <div className="text-gray-500 p-5 text-sm border-grey-900">
       <div className="space-y-4">
@@ -38,7 +42,7 @@ const SideBar = () => {
           <p>Your Episodes</p>
         </button>
 
-        <hr className="border-t-[0.1px] border-gray-500" />
+        <hr className="border-t-[0.1px] border-gray-700" />
 
         {/* Section to redener Existing Playlists */}
         <p className="cursor-pointe hover:text-white">Playlist Name... </p>
