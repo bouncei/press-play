@@ -1,4 +1,4 @@
-import { getProviders, signIn } from "next-auth/react";
+import { getProviders, signIn, signOut } from "next-auth/react";
 // import appLogo from "../assets/logo.jpg";
 
 const login = ({ providers }) => {

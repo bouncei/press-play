@@ -2,7 +2,7 @@ import Head from "next/head";
 import Image from "next/image";
 
 // PAGE COMPONENTS
-import { SideBar, Footer } from "../components";
+import { SideBar, Footer, Center } from "../components";
 
 const Home = () => {
   return (
@@ -12,10 +12,11 @@ const Home = () => {
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
-      <main>
+      <main className="flex">
         {/* SideBar */}
         <SideBar />
         {/* Main Section */}
+        <Center />
       </main>
 
       {/* Footer Section */}

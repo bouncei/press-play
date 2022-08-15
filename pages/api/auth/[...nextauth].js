@@ -3,6 +3,7 @@ import SpotifyProvider from "next-auth/providers/spotify";
 import spotifyApi, { LOGIN_URL } from "../../../lib/spotify";
 
 async function refreshAccessToken(token) {
+  console.log("Token has expired");
   // asynchrous function to refresh access token when it has expired
   try {
     spotifyApi.setAccessToken(token.accessToken);
