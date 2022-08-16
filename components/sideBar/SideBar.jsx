@@ -12,6 +12,7 @@ import useSpotify from "../../hooks/useSpotify";
 // RECOIL
 import { useRecoilState } from "recoil";
 import { playlistIdState } from "../../atoms/playlistAtom";
+import { stringify } from "querystring";
 
 const SideBar = () => {
   const spotifyApi = useSpotify();
@@ -27,10 +28,21 @@ const SideBar = () => {
     }
   }, [session, spotifyApi]);
 
+  // Truncate function for the playlist name
+  const truncateString = (str) => {
+    console.log("length of str", str.length);
+    if (str.length > 23) {
+      let tru = str.substring(0, 23);
+      return tru + "...";
+    }
+
+    return str;
+  };
+
   console.log("user details", playlists);
 
   return (
-    <div className="text-gray-500 p-5 text-sm lg:text-xs border-grey-900 overflow-y-scroll scrollbar-hide h-screen sm:max-w-[12rem] lg:max-h[15rem] hidden md:inline-flex">
+    <div className="text-gray-500 p-5 text-sm lg:text-xs border-grey-900 overflow-y-scroll scrollbar-hide h-screen sm:max-w-[12rem] lg:max-w-[23rem] hidden md:inline-flex">
       <div className="space-y-4">
         <button className="flex items-center space-x-2 hover:text-white">
           <HomeIcon className="h-5 w-5" />
@@ -67,7 +79,7 @@ const SideBar = () => {
             className="cursor-pointer hover:text-white"
             onClick={() => setPlaylistId(item.id)}
           >
-            {item.name}
+            {truncateString(item.name)}
           </p>
         ))}
       </div>

@@ -9,7 +9,7 @@ import { playlistIdState, playlistState } from "../../atoms/playlistAtom";
 import useSpotify from "../../hooks/useSpotify";
 
 // PAGE SUB-COMPONENTS
-import Song from "../songComp/Song";
+import Songs from "../songsComp/Songs";
 
 const colors = [
   "from-indigo-500",
@@ -29,6 +29,8 @@ const Center = () => {
   const playlistId = useRecoilValue(playlistIdState);
   const [playlist, setPlaylist] = useRecoilState(playlistState);
 
+  console.log("gaming playlistId", playlistId);
+
   useEffect(() => {
     // Shuffling the array of background colors or the header
     setColor(shuffle(colors).pop());
@@ -41,11 +43,11 @@ const Center = () => {
         setPlaylist(data.body);
       })
       .catch((err) => console.log("Something went wrong!", err));
-  }, [spotifyApi, playlistId]);
+  }, [spotifyApi, playlistId, session]);
 
-  console.log("playlist detials", playlist);
+  // console.log("playlist detials", playlist);
   return (
-    <div className="text-white flex-grow">
+    <div className="text-white flex-grow overflow-y-scroll scrollbar-hide h-screen">
       <header className="absolute top-5 right-8">
         <div className="flex items-center space-x-3 text-white opacity-90 hover:opacity-80 cursor-pointer rounded-full p-1 pr-2 bg-gray-800">
           <img
@@ -77,6 +79,10 @@ const Center = () => {
             {playlist?.name}
           </h1>
         </div>
+      </section>
+
+      <section>
+        <Songs />
       </section>
     </div>
   );
