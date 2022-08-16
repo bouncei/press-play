@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import {
   HomeIcon,
   SearchIcon,
@@ -8,10 +8,22 @@ import {
   RssIcon,
 } from "@heroicons/react/outline";
 import { useSession } from "next-auth/react";
+import useSpotify from "../../hooks/useSpotify";
 
 const SideBar = () => {
+  const spotifyApi = useSpotify();
   const { data: session, status } = useSession();
-  // console.log("user session details", session);
+  const [playlists, setPlaylists] = useState([]);
+
+  useEffect(() => {
+    if (spotifyApi.getAccessToken()) {
+      spotifyApi.getUserPlaylists().then((data) => {
+        setPlaylists(data.body.items);
+      });
+    }
+  }, [session, spotifyApi]);
+
+  console.log("user details", playlists);
 
   return (
     <div className="text-gray-500 p-5 text-sm border-grey-900 overflow-y-scroll scrollbar-hide h-screen">
@@ -44,15 +56,12 @@ const SideBar = () => {
 
         <hr className="border-t-[0.1px] border-gray-700" />
 
-        {/* Section to redener Existing Playlists */}
-        <p className="cursor-pointe hover:text-white">Playlist Name... </p>
-        <p className="cursor-pointe hover:text-white">Playlist Name... </p>
-        <p className="cursor-pointe hover:text-white">Playlist Name... </p>
-        <p className="cursor-pointe hover:text-white">Playlist Name... </p>
-        <p className="cursor-pointe hover:text-white">Playlist Name... </p>
-        <p className="cursor-pointe hover:text-white">Playlist Name... </p>
-        <p className="cursor-pointe hover:text-white">Playlist Name... </p>
-        <p className="cursor-pointe hover:text-white">Playlist Name... </p>
+        {/* Section to render Existing Playlists */}
+        {playlists.map((item, index) => (
+          <p key={index} className="cursor-pointer hover:text-white">
+            {item.name}
+          </p>
+        ))}
       </div>
     </div>
   );
