@@ -3,27 +3,47 @@ import { useSession, getProviders } from "next-auth/react";
 import { ChevronDownIcon } from "@heroicons/react/outline";
 
 import { shuffle } from "lodash";
+// RECOIL
+import { useRecoilState, useRecoilValue } from "recoil";
+import { playlistIdState, playlistState } from "../../atoms/playlistAtom";
+import useSpotify from "../../hooks/useSpotify";
+
+// PAGE SUB-COMPONENTS
+import Song from "../songComp/Song";
 
 const colors = [
   "from-indigo-500",
   "from-purple-500",
   "from-pink-500",
   "from-red-500",
-  "from-indigo-500",
+  "from-cyan-500",
+  "from-orange-500",
   "from-green-500",
   "from-blue-500",
 ];
 
 const Center = () => {
   const { data: session } = useSession();
+  const spotifyApi = useSpotify();
   const [color, setColor] = useState(null);
+  const playlistId = useRecoilValue(playlistIdState);
+  const [playlist, setPlaylist] = useRecoilState(playlistState);
 
   useEffect(() => {
+    // Shuffling the array of background colors or the header
     setColor(shuffle(colors).pop());
-  }, []);
+  }, [playlistId]);
 
-  console.log(session);
+  useEffect(() => {
+    spotifyApi
+      .getPlaylist(playlistId)
+      .then((data) => {
+        setPlaylist(data.body);
+      })
+      .catch((err) => console.log("Something went wrong!", err));
+  }, [spotifyApi, playlistId]);
 
+  console.log("playlist detials", playlist);
   return (
     <div className="text-white flex-grow">
       <header className="absolute top-5 right-8">
@@ -45,7 +65,18 @@ const Center = () => {
       <section
         className={`flex items-end space-x-7 bg-gradient-to-b ${color} to-black  h-80 text-white p-8 w-full`}
       >
-        <img src="" alt="" />
+        <img
+          className="h-44 w-44 shadow-2xl"
+          src={playlist?.images?.[0].url}
+          alt=""
+        />
+
+        <div className="">
+          <p>PUBLIC PLAYLIST</p>
+          <h1 className="text-2xl md:text3xl xl:text-5xl font-bold">
+            {playlist?.name}
+          </h1>
+        </div>
       </section>
     </div>
   );
