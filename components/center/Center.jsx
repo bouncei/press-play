@@ -4,7 +4,7 @@ import React from "react";
 const Center = () => {
   const { data: session } = useSession();
 
-  //   console.log(getProviders());
+  console.log(session);
 
   return (
     <div className="text-white flex flex-grow scroll-ba">

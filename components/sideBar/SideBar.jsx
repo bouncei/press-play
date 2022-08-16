@@ -11,7 +11,7 @@ import { useSession } from "next-auth/react";
 
 const SideBar = () => {
   const { data: session, status } = useSession();
-  console.log("user session details", session);
+  // console.log("user session details", session);
 
   return (
     <div className="text-gray-500 p-5 text-sm border-grey-900 overflow-y-scroll scrollbar-hide h-screen">
