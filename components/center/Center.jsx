@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { useSession, getProviders } from "next-auth/react";
+import { useSession, getProviders, signOut } from "next-auth/react";
 import { ChevronDownIcon } from "@heroicons/react/outline";
 
 import { shuffle } from "lodash";
@@ -49,7 +49,10 @@ const Center = () => {
   return (
     <div className="text-white flex-grow overflow-y-scroll scrollbar-hide h-screen">
       <header className="absolute top-5 right-8">
-        <div className="flex items-center space-x-3 text-white opacity-90 hover:opacity-80 cursor-pointer rounded-full p-1 pr-2 bg-gray-800">
+        <div
+          className="flex items-center space-x-3 text-white opacity-90 hover:opacity-80 cursor-pointer rounded-full p-1 pr-2 bg-gray-800"
+          onClick={signOut}
+        >
           <img
             className="rounded-full w-10 h-10"
             src={

@@ -79,7 +79,7 @@ const SideBar = () => {
             className="cursor-pointer hover:text-white"
             onClick={() => setPlaylistId(item.id)}
           >
-            {truncateString(item.name)}
+            {item.name}
           </p>
         ))}
       </div>
