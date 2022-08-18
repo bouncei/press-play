@@ -10,10 +10,21 @@ const Song = ({ track, order }) => {
   const [currTrackId, setCurrTrackId] = useRecoilState(currentTrackId);
   const [isPlaying, setIsPlaying] = useRecoilState(isPlayingState);
 
-  const playSong = async () => {};
-  console.log("active song", track);
+  const playSong = () => {
+    setCurrTrackId(track.track.id);
+    setIsPlaying(true);
+    // Playing the track
+    spotifyApi.play({
+      uris: [track.track.uri],
+    });
+  };
+
+  // console.log("active song", track);
   return (
-    <div className="grid grid-cols-2 text-gray-500 py-3 px-3 hover:bg-gray-900 rounded-lg cursor-pointer">
+    <div
+      className="grid grid-cols-2 text-gray-500 py-3 px-3 hover:bg-gray-900 rounded-lg cursor-pointer"
+      onClick={playSong}
+    >
       <div className="flex items-center space-x-4">
         <p>{order + 1}</p>
         <img

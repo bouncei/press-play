@@ -3,7 +3,7 @@ import Head from "next/head";
 import Image from "next/image";
 
 // PAGE COMPONENTS
-import { SideBar, Footer, Center } from "../components";
+import { SideBar, Footer, Center, Player } from "../components";
 
 const Home = () => {
   return (
@@ -20,8 +20,10 @@ const Home = () => {
         <Center />
       </main>
 
-      {/* Footer Section */}
-      <Footer />
+      {/* Player Section */}
+      <div className="sticky bottom-0 text-white py-6 bg-slate-600">
+        <Player />
+      </div>
     </div>
   );
 };
